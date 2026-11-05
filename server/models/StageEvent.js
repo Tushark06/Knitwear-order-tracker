@@ -26,12 +26,12 @@ const stageEventSchema = new mongoose.Schema({
 
   photoUrl: {
     type: String,
-    default: ' '
+    default: ''
   },
 
   issueNote: {
     type: String,
-    default: ' '
+    default: ''
   },
 
   reasonCategory: {
