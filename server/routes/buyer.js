@@ -14,7 +14,7 @@ router.post('/', protect, requireRole('merchandiser'), async (req, res) => {
     }
 });
 
-router.get('/', protect, requireRole('merchandiser'), async (req, res) => {
+router.get('/', protect, async (req, res) => {
     try {
         const buyers = await Buyer.find();
         res.json(buyers);
