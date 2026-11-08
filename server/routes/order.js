@@ -1,6 +1,8 @@
 const express = require('express');
 const Order = require('../models/Order');
 const { protect, requireRole } = require('../middleware/auth');
+const StageEvent = require('../models/StageEvent');
+const { calculateRunRate } = require('../utils/runRate');
 
 const router = express.Router();
 
@@ -29,7 +31,9 @@ router.get('/:id', protect, async (req, res) => {
         if (!order) {
             return res.status(404).json({ message: 'Order not found' });
         }
-        res.json(order);
+        const events = await StageEvent.find({ order: order._id }).sort({ createdAt: 1 });
+        const runRate = calculateRunRate(order, events);
+        res.json({ ...order.toObject(), runRate });
     } catch (error) {
         res.status(500).json({ message: 'Server error' });
     }
