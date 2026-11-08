@@ -19,7 +19,13 @@ router.post('/', protect, requireRole('merchandiser'), async (req, res) => {
 router.get('/', protect, async (req, res) => {
     try {
         const orders = await Order.find().populate('buyer', 'name country');
-        res.json(orders);
+        const result = [];
+        for (const order of orders) {
+            const events = await StageEvent.find({ order: order._id }).sort({ createdAt: 1 });
+            const runRate = calculateRunRate(order, events);
+            result.push({ ...order.toObject(), runRate });
+        }
+        res.json(result);
     } catch (error) {
         res.status(500).json({ message: 'Server error' });
     }
