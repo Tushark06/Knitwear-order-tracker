@@ -20,7 +20,7 @@ router.post('/', protect, requireRole('supervisor'), async (req, res) => {
         const allEvents = await StageEvent.find({ order: foundOrder._id}).sort({ createdAt: 1 });
         const runRate = calculateRunRate(foundOrder, allEvents);
         if (runRate.status === 'Amber' || runRate.status === 'Red') {
-            await Alert.create({ order: foundOrder._id, stage: stage, level: runRate.status, requiredPerDay:runRate.requiredPerDay, actualPerDay:runRate.actualPerDay, remainingQuantity: runRate.remainingQuantity, daysLeft: runRate.daysLeft, message: stage + ' is behind: needs ' + runRate.requiredPerDay + ' pirces/day but making ' + runRate.actualPerDay + ' pieces/day. ' + runRate.remainingQuantity + ' pieces left, ' + runRate.daysLeft + ' days to ex-factory.'});
+            await Alert.create({ order: foundOrder._id, stage: stage, level: runRate.status, requiredPerDay:runRate.requiredPerDay, actualPerDay:runRate.actualPerDay, remainingQuantity: runRate.remainingQuantity, daysLeft: runRate.daysLeft, message: stage + ' is behind: needs ' + runRate.requiredPerDay + ' pieces/day ' + runRate.actualPerDay + ' pieces/day. ' + runRate.remainingQuantity + ' pieces left, ' + runRate.daysLeft + ' days to ex-factory.'});
         }
         res.status(201).json(stageEvent);
     } catch (error) {

@@ -5,7 +5,7 @@ const router = express.Router();
 
 router.get('/', protect, async (req, res) => {
     try {
-        const alerts = await Alert.find().sorty({ createdAt: -1 }).populate('order', 'poNumber');
+        const alerts = await Alert.find().sort({ createdAt: -1 }).populate('order', 'poNumber');
         res.json(alerts);
     } catch (error) {
         res.status(500).json({ message: 'Server error' });
@@ -14,7 +14,7 @@ router.get('/', protect, async (req, res) => {
 
 router.patch('/:id/confirm', protect, requireRole('merchandiser'), async (req, res) => {
     try {
-        const alert = await Alert.findById(req, URLSearchParams.id);
+        const alert = await Alert.findById(req.params.id);
         if (!alert) { return
             res.status(404).json({ message: 'Alert not found' });
         }
@@ -28,8 +28,9 @@ router.patch('/:id/confirm', protect, requireRole('merchandiser'), async (req, r
 
 router.patch('/:id/send', protect, requireRole('merchandiser'), async (req, res) => {
     try {
-        const alert = await Alert.findById(req, params.id);
-        if (!alert) { return
+        const alert = await Alert.findById(req.params.id);
+        if (!alert) { 
+            return
             res.status(404).json({ message: 'Alert not found' });
         }
         alert.status = 'Sent to buyer';
