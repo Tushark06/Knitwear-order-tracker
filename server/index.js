@@ -6,6 +6,7 @@ const authRoutes = require('./routes/auth');
 const buyerRoutes = require('./routes/buyer');
 const orderRoutes = require('./routes/order');
 const stageEventRoutes = require('./routes/stageEvent');
+const alertRoutes = require('./routes/alert'); 
 
 dotenv.config();
 
@@ -22,6 +23,7 @@ app.use('/api/auth', authRoutes);
 app.use('/api/buyers', buyerRoutes);
 app.use('/api/orders', orderRoutes);
 app.use('/api/stage-events', stageEventRoutes);
+app.use('/api/alerts', alertRoutes);
 
 app.get('/', (req, res) => {
   res.send('Knitwear API running');
