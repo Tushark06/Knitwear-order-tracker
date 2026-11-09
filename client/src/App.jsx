@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import Login from './Login.jsx';
-import { getToken } from './api';
+import { clearToken } from './api';
 import Board from './Board.jsx';
 
 export default function App() {
@@ -8,5 +8,6 @@ export default function App() {
   if(!user) {
     return <Login onLogin = {setUser} />;
   }
-  return <Board />;
+  const logout = () => { clearToken(); setUser(null); };
+  return <Board user={user} onLogout={logout} />;
 }

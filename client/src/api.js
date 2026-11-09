@@ -8,7 +8,7 @@ export async function callApi(path, method = 'GET', body){
         method,
         headers: {
             'Content-Type':'application/json',
-            Authorization:'Bearer' + getToken(),
+            Authorization:'Bearer ' + getToken(),
         },
         body:body ? JSON.stringify(body): undefined,
     });

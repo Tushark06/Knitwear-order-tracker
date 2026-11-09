@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { callApi } from './api';
 
-export default function Board() {
+export default function Board({ user, onLogout }) {
     const [orders, setOrders] = useState([]);
     const [alerts, setAlerts] = useState([]);
     const [error, setError] = useState('');
@@ -28,6 +28,7 @@ export default function Board() {
 
     return (
         <div>
+            <p>{user.name} ({user.role}) <button onClick={onLogout}>Logout</button></p>
             <h1>Order Board</h1>
             {error && <p>{error}</p>}
             {orders.map((order) => (
@@ -35,7 +36,6 @@ export default function Board() {
                     <h3>{order.poNumber} — {order.styleName}</h3>
                     <p>Buyer: {order.buyer.name} ({order.buyer.country}) | Stage: {order.currentStage}</p>
                     <p>Ex-factory: {order.exFactoryDate.slice(0, 10)}</p>
-                    slice(0, 10)
                    <p>Done: {order.runRate.done} / {order.totalQuantity} | Bache: {order.runRate.remainingQuantity} | Din bache: {order.runRate.daysLeft}</p>
                    <p>Chahiye: {order.runRate.requiredPerDay}/day | Ban raha: {order.runRate.actualPerDay}/day</p>
                    <p>Status: <span style={{ backgroundColor: order.runRate.status === 'Green' ? 'green' : order.runRate.status === 'Amber' ? 'orange' : 'red', padding: '2px 8px', color: 'white' }}>{order.runRate.status}</span></p>
@@ -49,8 +49,9 @@ export default function Board() {
                     <p>Status: {alert.status}</p>
                     {alert.status === 'Open' && <button onClick={() => doAction(alert._id, 'confirm')}>Confirm</button>}
                     {alert.status === 'Confirmed' && <button onClick={() => doAction(alert._id, 'send')}>Send to buyer</button>}
+               </div>
+            ))}
         </div>
-        ))}
     );
 
 }
